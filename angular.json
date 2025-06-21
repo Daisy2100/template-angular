@@ -13,7 +13,8 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-      "architect": {        "build": {
+      "architect": {
+        "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
@@ -29,8 +30,10 @@
                 "glob": "**/*",
                 "input": "public"
               }
-            ],            "styles": [
+            ],
+            "styles": [
               "src/assets/styles.scss",
+              "src/assets/styles.css",
               "node_modules/primeicons/primeicons.css"
             ],
             "stylePreprocessorOptions": {
@@ -48,7 +51,8 @@
                   "type": "initial",
                   "maximumWarning": "500kB",
                   "maximumError": "1MB"
-                },                {
+                },
+                {
                   "type": "anyComponentStyle",
                   "maximumWarning": "10kB",
                   "maximumError": "12kB"
@@ -92,8 +96,12 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }            ],            "styles": [
-              "src/assets/styles.scss"
+              }
+            ],
+            "styles": [
+              "src/assets/styles.scss",
+              "src/assets/styles.css",
+              "node_modules/primeicons/primeicons.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

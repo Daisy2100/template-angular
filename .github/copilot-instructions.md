@@ -5,10 +5,11 @@
 ## 目前使用框架
 1. angular 19
 2. primeNG 19 
+3. tailwind css4.1
 
 ## 開發方式
 
-基本上都使用 primeNG 當作基礎元件，當樣式無法符合需求時，使用自訂的 SCSS。
+基本上都使用 primeNG 當作基礎元件，當樣式無法符合需求時，使用tailwind css4.1，最後才使用自訂的 SCSS。
 
 ## Scss
 
