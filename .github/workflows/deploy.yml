@@ -1,0 +1,50 @@
+name: Deploy Angular and Manage Firewall
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular
+        run: npm run build -- --configuration production
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CICD_KEY }}
+
+      - name: Install gcloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Enable Firewall Rule
+        run: |
+          gcloud compute firewall-rules update allow-github-actions-ssh --disabled=false
+
+      - name: Deploy to GCP VM via SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 35.206.243.246 >> ~/.ssh/known_hosts
+          scp -r dist/* daisy@35.206.243.246:/opt/html/template-angular
+
+      - name: Disable Firewall Rule
+        if: always()
+        run: |
+          gcloud compute firewall-rules update allow-github-actions-ssh --disabled=true
