@@ -43,12 +43,16 @@ jobs:
           echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # SSH 測試連線是否 OK
-          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa daisy@$GCP_VM_IP "echo SSH OK"
+          # 先清除舊的 known_hosts 避免衝突
+          rm -f ~/.ssh/known_hosts
 
+          # 加入 GCP VM 公鑰到 known_hosts
           ssh-keyscan -H $GCP_VM_IP >> ~/.ssh/known_hosts
 
-          # 上傳檔案（加 -v 看錯誤）
+          # SSH 測試連線 (加 -vvv 方便除錯)
+          ssh -vvv -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa daisy@$GCP_VM_IP "echo SSH OK"
+
+          # 傳檔案
           scp -v -r dist/* daisy@$GCP_VM_IP:/opt/html/template-angular
 
       - name: Disable Firewall Rule
