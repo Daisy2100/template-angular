@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         run: npm install
@@ -34,7 +34,7 @@ jobs:
 
       - name: Enable Firewall Rule
         run: |
-          gcloud compute firewall-rules update allow-github-actions-ssh --disabled=false
+          run: gcloud compute firewall-rules update allow-github-actions-ssh --no-disable
 
       - name: Deploy to GCP VM via SSH
         run: |
@@ -46,5 +46,4 @@ jobs:
 
       - name: Disable Firewall Rule
         if: always()
-        run: |
-          gcloud compute firewall-rules update allow-github-actions-ssh --disabled=true
+        run: gcloud compute firewall-rules update allow-github-actions-ssh --disable
