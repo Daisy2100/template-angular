@@ -33,7 +33,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
 
       - name: Enable Firewall Rule
-        run: gcloud compute firewall-rules update allow-github-actions-ssh --disabled=false
+        run: gcloud compute firewall-rules update allow-github-actions-ssh --no-disabled
 
       - name: Deploy to GCP VM via SSH
         run: |
@@ -45,4 +45,4 @@ jobs:
 
       - name: Disable Firewall Rule
         if: always()
-        run: gcloud compute firewall-rules update allow-github-actions-ssh --disabled=true
+        run: gcloud compute firewall-rules update allow-github-actions-ssh --disabled
