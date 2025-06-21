@@ -42,10 +42,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $GCP_VM_IP >> ~/.ssh/known_hosts
 
           # SSH 測試連線是否 OK
           ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa daisy@$GCP_VM_IP "echo SSH OK"
+
+          ssh-keyscan -H $GCP_VM_IP >> ~/.ssh/known_hosts
 
           # 上傳檔案（加 -v 看錯誤）
           scp -v -r dist/* daisy@$GCP_VM_IP:/opt/html/template-angular
