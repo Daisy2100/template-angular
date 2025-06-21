@@ -131,15 +131,14 @@
       color: white;
       border: none;
       padding: 0.875rem 1.5rem;
-      border-radius: 8px;
-      font-size: 1rem;
+      border-radius: 8px;      font-size: 1rem;
       font-weight: $font-weight-medium;
       font-family: $font-family-primary;
       cursor: pointer;
       transition: background-color $transition-normal;
 
       &:hover {
-        background: darken($color-primary, 8%);
+        background: $color-primary-darker;
       }
 
       &:focus {

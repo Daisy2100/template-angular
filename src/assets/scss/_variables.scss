@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Font Families
 $font-family-primary: "Manrope", "IBM Plex Sans JP", yakuhanjp, -apple-system, blinkmacsystemfont, "Helvetica Neue", hiragino sans, "\30d2\30e9\30ae\30ce\89d2\30b4 ProN W3", hiragino kaku gothic pron, "Yu Gothic", yugothic, verdana, meiryo, "M+ 1p", sans-serif;
 $font-family-secondary: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif;
@@ -76,3 +78,17 @@ $z-index-modal-backdrop: 1040;
 $z-index-modal: 1050;
 $z-index-popover: 1060;
 $z-index-tooltip: 1070;
+
+// Color helper functions using modern Sass syntax
+// 替代舊版 darken() 函數的現代化方法
+@function darken-color($color, $amount) {
+  @return color.adjust($color, $lightness: -$amount);
+}
+
+@function lighten-color($color, $amount) {
+  @return color.adjust($color, $lightness: $amount);
+}
+
+// 常用的顏色變體
+$color-primary-darker: darken-color($color-primary, 8%);
+$color-primary-darker-alt: darken-color($color-primary, 10%);

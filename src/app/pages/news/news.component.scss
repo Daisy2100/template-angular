@@ -76,8 +76,7 @@
 
     .read-more {
       display: inline-block;
-      color: $color-primary;
-      text-decoration: none;
+      color: $color-primary;      text-decoration: none;
       font-weight: $font-weight-medium;
       font-size: 0.875rem;
       letter-spacing: $letter-spacing-wide;
@@ -85,7 +84,7 @@
       transition: color $transition-normal;
 
       &:hover {
-        color: darken($color-primary, 10%);
+        color: $color-primary-darker-alt;
         text-decoration: underline;
       }
     }
