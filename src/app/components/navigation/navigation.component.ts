@@ -2,13 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
 import { NavigationService, NavigationItem } from './navigation.service';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [RouterModule, SidebarModule, ButtonModule, CommonModule],
+  imports: [RouterModule, SidebarModule, ButtonModule, MenuModule, CommonModule],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
@@ -65,5 +66,14 @@ export class NavigationComponent implements OnInit {
    */
   trackByNavItem(index: number, item: NavigationItem): string {
     return item.id;
+  }
+
+  /**
+   * 檢查導航項目是否有子項目
+   * @param item NavigationItem
+   * @returns boolean
+   */
+  hasChildren(item: NavigationItem): boolean {
+    return this.navigationService.hasChildren(item);
   }
 }

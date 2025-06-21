@@ -6,7 +6,11 @@
     </div>
   </section>
 
-  <section class="news-content">
+  <!-- 子路由內容區域 -->
+  <router-outlet></router-outlet>
+
+  <!-- 如果沒有子路由，顯示預設內容 -->
+  <section class="news-content" *ngIf="!hasActiveChildRoute">
     <div class="content-wrapper">
       <article class="news-item">
         <div class="news-date">2025-06-20</div>

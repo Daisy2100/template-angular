@@ -2,13 +2,32 @@
   <div class="max-w-7xl mx-auto px-8">
     <div class="nav-container">
       <!-- Logo -->
-      <a routerLink="/" class="logo-link">{{ logoText }}</a>
-
-      <!-- Desktop Menu (Hidden on mobile) -->
+      <a routerLink="/" class="logo-link">{{ logoText }}</a>      <!-- Desktop Menu (Hidden on mobile) -->
       <nav class="desktop-menu" *ngIf="!isLoading">
         <ul class="nav-links">
           <li *ngFor="let item of navigationItems; trackBy: trackByNavItem">
-            <a [routerLink]="item.path"
+            <!-- 有子選單的項目 -->
+            <div *ngIf="hasChildren(item)" class="nav-item-with-dropdown">
+              <a [routerLink]="item.path"
+                 class="nav-link"
+                 [class.active]="item.isActive">
+                {{ item.displayName }}
+                <i class="pi pi-chevron-down dropdown-icon"></i>
+              </a>
+              <ul class="dropdown-menu">
+                <li *ngFor="let child of item.children; trackBy: trackByNavItem">
+                  <a [routerLink]="child.path"
+                     class="dropdown-link"
+                     [class.active]="child.isActive">
+                    {{ child.displayName }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 沒有子選單的項目 -->
+            <a *ngIf="!hasChildren(item)"
+               [routerLink]="item.path"
                class="nav-link"
                [class.active]="item.isActive">
               {{ item.displayName }}
@@ -41,14 +60,34 @@
     <button class="close-btn" (click)="closeSidebar()" aria-label="Close menu">
       <span class="close-line"></span>
       <span class="close-line"></span>
-    </button>
-
-    <!-- Menu Items -->
+    </button>    <!-- Menu Items -->
     <nav class="overlay-nav" *ngIf="!isLoading">
       <ul class="overlay-menu-list">
         <li><a routerLink="/" (click)="closeSidebar()" class="overlay-menu-link">Top</a></li>
         <li *ngFor="let item of navigationItems; trackBy: trackByNavItem">
-          <a [routerLink]="item.path"
+          <!-- 有子選單的項目 -->
+          <div *ngIf="hasChildren(item)" class="overlay-menu-with-children">
+            <a [routerLink]="item.path"
+               (click)="closeSidebar()"
+               class="overlay-menu-link"
+               [class.active]="item.isActive">
+              {{ item.displayName }}
+            </a>
+            <ul class="overlay-submenu">
+              <li *ngFor="let child of item.children; trackBy: trackByNavItem">
+                <a [routerLink]="child.path"
+                   (click)="closeSidebar()"
+                   class="overlay-submenu-link"
+                   [class.active]="child.isActive">
+                  {{ child.displayName }}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 沒有子選單的項目 -->
+          <a *ngIf="!hasChildren(item)"
+             [routerLink]="item.path"
              (click)="closeSidebar()"
              class="overlay-menu-link"
              [class.active]="item.isActive">
