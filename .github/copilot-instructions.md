@@ -1,15 +1,15 @@
-
-
 開發時，請參照以下規範做開發。
 
 ## 目前使用框架
 1. angular 19
 2. primeNG 19 
-3. tailwind css4.1
+3. tailwind css 3.4
 
 ## 開發方式
 
-基本上都使用 primeNG 當作基礎元件，當樣式無法符合需求時，使用tailwind css4.1，最後才使用自訂的 SCSS。
+1. 使用 primeNG 當作基礎元件
+2. 當樣式無法符合需求時，使用tailwind css3.4
+3. 避免使用自訂的CSS。
 
 ## Scss
 

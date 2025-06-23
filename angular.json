@@ -33,7 +33,7 @@
             ],
             "styles": [
               "src/assets/styles.scss",
-              "src/assets/styles.css",
+              "src/styles.scss",
               "node_modules/primeicons/primeicons.css"
             ],
             "stylePreprocessorOptions": {
@@ -100,7 +100,7 @@
             ],
             "styles": [
               "src/assets/styles.scss",
-              "src/assets/styles.css",
+              "src/styles.scss",
               "node_modules/primeicons/primeicons.css"
             ],
             "stylePreprocessorOptions": {
