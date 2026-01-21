@@ -30,9 +30,9 @@ jobs:
         run: npm ci
 
       - name: Build Angular
-        run: npm run build -- --configuration production
+        run: npm run build -- --configuration production --base-href /template-angular/
 
-      - name: Locate Build Output (終極解法：追蹤 index.html)
+      - name: Locate Build Output
         id: setup_cname
         run: |
           # 1. 直接搜尋整個 dist 資料夾，找出 index.html 在哪裡
