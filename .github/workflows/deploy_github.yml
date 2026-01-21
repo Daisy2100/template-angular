@@ -1,0 +1,71 @@
+name: Deploy Angular to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Angular
+        run: npm run build -- --configuration production
+
+      - name: Auto-detect and Setup CNAME (自動偵測路徑並建立 CNAME)
+        id: setup_cname
+        run: |
+          # 1. 抓取 dist 下的第一個資料夾名稱 (不管是 portfolio 還是 template-angular)
+          PROJECT_DIR=$(ls -d dist/* | head -n 1)
+          
+          # 2. 判斷是否有 browser 子資料夾 (SSR 專案會有，普通專案沒有)
+          if [ -d "$PROJECT_DIR/browser" ]; then
+            TARGET_DIR="$PROJECT_DIR/browser"
+          else
+            TARGET_DIR="$PROJECT_DIR"
+          fi
+          
+          echo "✅ 自動偵測到的輸出路徑: $TARGET_DIR"
+          
+          # 3. 建立 CNAME
+          echo "daisy2100.com" > "$TARGET_DIR/CNAME"
+          
+          # 4. 把路徑存到變數，傳給下一個步驟用
+          echo "BUILD_PATH=$TARGET_DIR" >> $GITHUB_ENV
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 使用剛剛自動偵測到的路徑
+          path: ${{ env.BUILD_PATH }}
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
