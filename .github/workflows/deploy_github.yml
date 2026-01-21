@@ -32,27 +32,29 @@ jobs:
       - name: Build Angular
         run: npm run build -- --configuration production
 
-      - name: Auto-detect and Setup CNAME (修復版：過濾掉 txt 檔案)
+      - name: Locate Build Output (終極解法：追蹤 index.html)
         id: setup_cname
         run: |
-          # 【關鍵修正】使用 find 指令，只找 "type d" (Directory 資料夾)，忽略 txt 檔案
-          PROJECT_DIR=$(find dist -mindepth 1 -maxdepth 1 -type d | head -n 1)
+          # 1. 直接搜尋整個 dist 資料夾，找出 index.html 在哪裡
+          INDEX_PATH=$(find dist -name "index.html" | head -n 1)
           
-          echo "📂 偵測到的專案目錄: $PROJECT_DIR"
-          
-          # 判斷是否有 browser 子資料夾
-          if [ -d "$PROJECT_DIR/browser" ]; then
-            TARGET_DIR="$PROJECT_DIR/browser"
-          else
-            TARGET_DIR="$PROJECT_DIR"
+          if [ -z "$INDEX_PATH" ]; then
+            echo "❌ 錯誤：找不到 index.html！建置可能失敗了，或者輸出路徑不在 dist 內。"
+            # 列出 dist 結構幫忙除錯
+            ls -R dist
+            exit 1
           fi
+
+          # 2. 取得 index.html 所在的資料夾路徑 (dirname)
+          TARGET_DIR=$(dirname "$INDEX_PATH")
           
-          echo "✅ 最終部署路徑: $TARGET_DIR"
+          echo "✅ 找到 index.html 位於: $INDEX_PATH"
+          echo "✅ 最終部署目錄鎖定為: $TARGET_DIR"
           
-          # 建立 CNAME
+          # 3. 建立 CNAME
           echo "daisy2100.com" > "$TARGET_DIR/CNAME"
           
-          # 存變數
+          # 4. 存變數
           echo "BUILD_PATH=$TARGET_DIR" >> $GITHUB_ENV
 
       - name: Upload artifact
